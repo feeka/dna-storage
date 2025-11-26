@@ -1,4 +1,4 @@
-dna-storage — modular DNA-as-storage prototype (WIP)
+## DNA Storage — modular DNA-as-storage prototype - in progress...
 
 Short, to-the-point status
 - Purpose: a lightweight, modular framework for experimenting with DNA-based storage pipelines (input → encode → map → channel → align → decode → output).
