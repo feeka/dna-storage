@@ -1,0 +1,2 @@
+Hello from dna_storage example pipeline!
+This demonstrates a toy GF(4) parity encoder and simple channel.

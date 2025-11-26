@@ -1,0 +1,10 @@
+[project]
+name = "dna_storage"
+version = "0.0.1"
+description = "Modular DNA-as-storage Python library with pluggable components"
+authors = [ { name = "Auto-generated", email = "you@example.com" } ]
+readme = "README.md"
+requires-python = ">=3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7"
