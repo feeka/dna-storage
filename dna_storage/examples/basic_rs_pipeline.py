@@ -16,7 +16,7 @@ EXAMPLE_PATH = os.path.join(os.path.dirname(__file__), "example_input.txt")
 def make_example_file():
     if not os.path.exists(EXAMPLE_PATH):
         with open(EXAMPLE_PATH, "w", encoding="utf-8") as fh:
-            fh.write("Hello from dna_storage example pipeline!\nThis demonstrates a toy GF(4) parity encoder and simple channel.\n")
+            fh.write("Simple")
 
 
 class ChainedChannel:
@@ -31,7 +31,7 @@ class ChainedChannel:
 
 
 def main():
-    make_example_file()
+    #make_example_file()
 
     inputter = FileInputter(EXAMPLE_PATH, chunk_size=32)
     encoder = SimpleGf4ParityEncoder()
@@ -39,7 +39,7 @@ def main():
 
     # compose channel: duplicate copies per strand then apply IDS mutations
     dup = SoupDuplicator(copies=5)
-    ids = IDSChannel(sub_p=0.01, del_p=0.005, seed=2025)
+    ids = IDSChannel(sub_p=0.1, del_p=0.0001, seed=2025)
     channel = ChainedChannel(dup, ids)
 
     decoder = SimpleGf4ParityDecoder(mapper)

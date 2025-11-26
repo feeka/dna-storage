@@ -49,8 +49,29 @@ def test_basic_pipeline_roundtrip(tmp_path):
     outputter = YamlOutputter(outpath=str(out_path))
 
     pipeline = Pipeline(inputter, encoder, mapper, channel, decoder, outputter)
-    pipeline.run()
+    cmp = pipeline.run()
 
     assert out_path.exists()
     txt = out_path.read_text(encoding="utf-8")
     assert "small message for pipeline test" in txt
+
+    # run-time comparison returned useful information
+    assert isinstance(cmp, dict)
+    assert cmp["orig_len"] == len(data)
+    assert "levenshtein" in cmp
+
+
+def test_compare_utils():
+    from dna_storage.utils.compare import compare_bytes
+
+    a = b"hello"
+    b2 = b"hello"
+    c = b"hell0"
+
+    r1 = compare_bytes(a, b2)
+    assert r1["equal"] is True
+    assert r1["levenshtein"] == 0
+
+    r2 = compare_bytes(a, c)
+    assert r2["equal"] is False
+    assert r2["levenshtein"] >= 1

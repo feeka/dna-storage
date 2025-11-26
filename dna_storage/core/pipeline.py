@@ -32,7 +32,7 @@ class Pipeline:
         self.decoder = decoder
         self.outputter = outputter
 
-    def run(self) -> None:
+    def run(self) -> object:
         # Read messages
         messages = list(self.inputter.read())
 
@@ -48,5 +48,20 @@ class Pipeline:
         # Decode back to bytes
         decoded = self.decoder.decode(reads)
 
-        # Output
+        # Try comparing with original (concatenate original messages)
+        try:
+            from dna_storage.utils.compare import compare_bytes, pretty_report
+
+            original_all = b"".join(messages)
+            cmp = compare_bytes(original_all, decoded)
+            report = pretty_report(original_all, decoded)
+        except Exception:
+            cmp = None
+            report = "(compare failed)"
+
+        # Output decoded payload
         self.outputter.write(decoded)
+
+        # Print comparison summary to stdout and return details to caller
+        print("--- compare report:\n" + report)
+        return cmp
