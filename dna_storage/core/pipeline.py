@@ -7,6 +7,7 @@ from dna_storage.core.components import (
     Channel,
     Decoder,
     Outputter,
+    Aligner,
 )
 
 
@@ -24,6 +25,7 @@ class Pipeline:
         channel: Channel,
         decoder: Decoder,
         outputter: Outputter,
+        aligner: Aligner | None = None,
     ) -> None:
         self.inputter = inputter
         self.encoder = encoder
@@ -31,6 +33,7 @@ class Pipeline:
         self.channel = channel
         self.decoder = decoder
         self.outputter = outputter
+        self.aligner = aligner
 
     def run(self) -> object:
         # Read messages
@@ -44,6 +47,32 @@ class Pipeline:
 
         # Transmit through channel
         reads = list(self.channel.transmit(strands))
+
+        # optionally run an aligner if the pipeline provides one
+        try:
+            # aligner may or may not exist on the pipeline instance
+            aligner = getattr(self, "aligner", None)
+        except Exception:
+            aligner = None
+
+        if aligner is not None:
+            # If there are multiple original strands we try grouping reads by
+            # strand assuming the channel preserved order and produced roughly
+            # equal copies per strand (eg SoupDuplicator). Otherwise fall back
+            # to aligning all reads together.
+            if len(strands) > 0 and len(reads) >= len(strands) and len(reads) % len(strands) == 0:
+                copies = len(reads) // len(strands)
+                grouped = []
+                for i in range(len(strands)):
+                    seg = reads[i * copies : (i + 1) * copies]
+                    # aligner.align returns an iterable of consensus reads for the group
+                    out = list(aligner.align(seg))
+                    if out:
+                        grouped.append(out[0])
+                reads = grouped
+            else:
+                # align all reads together (legacy behaviour)
+                reads = list(aligner.align(reads))
 
         # Decode back to bytes
         decoded = self.decoder.decode(reads)

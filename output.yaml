@@ -1,0 +1,13 @@
+message: |
+  Typical pipeline patterns
+  
+  Pattern A — ECC first (byte-level) then map to bases:
+  data → outer ECC (RS/GF256 / fountain) → map symbols → DNA
+  Pros: uses mature ECC libraries and large symbol fields; easy to implement.
+  Cons: vulnerable to indels unless preceded by inner indel handling or reliable alignment/consensus.
+  Pattern B — convert to quaternary first and apply inner indel-aware coding:
+  data → quaternary conversion → inner indel-aware code (VT/HEDGES) per oligo → map → DNA → sequencing → inner decode (fix indels) → outer ECC
+  Pros: designed to correct insertions/deletions; makes outer code’s job easier.
+  Cons: inner codes are less standard, more complex, and often reduce rate.
+  Pattern C — hybrid (most robust):
+  Add sync markers / per-oligo IDs (UMIs), group reads, do MSA/consensus, inner indel fix, then outer ECC.

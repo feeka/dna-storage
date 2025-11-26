@@ -48,3 +48,12 @@ class Outputter(ABC):
     @abstractmethod
     def write(self, message: bytes) -> None:
         raise NotImplementedError()
+
+
+class Aligner(ABC):
+    """Adapter for alignment/consensus components which take raw reads and produce aligned reads or consensus strings."""
+
+    @abstractmethod
+    def align(self, reads: Iterable[str]) -> Iterable[str]:
+        """Returns an iterable of aligned/consensus DNA strings from noisy reads."""
+

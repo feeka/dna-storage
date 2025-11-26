@@ -2,11 +2,12 @@ import os
 
 from dna_storage.core.pipeline import Pipeline
 from dna_storage.components.inputter.file_inputter import FileInputter
-from dna_storage.components.encoder.dna_rs_gf4 import SimpleGf4ParityEncoder
+from dna_storage.components.encoder.reed_solomon import ReedSolomonEncoder
 from dna_storage.components.mapper.rotating import RotatingMapper
 from dna_storage.components.channel.soup_duplicator import SoupDuplicator
 from dna_storage.components.channel.ids_channel import IDSChannel
-from dna_storage.components.decoder.dna_rs_gf4_decoder import SimpleGf4ParityDecoder
+from dna_storage.components.aligner.simple_aligner import SimpleAligner
+from dna_storage.components.decoder.reed_solomon import ReedSolomonDecoder
 from dna_storage.components.outputter.yaml_outputter import YamlOutputter
 
 
@@ -33,20 +34,23 @@ class ChainedChannel:
 def main():
     #make_example_file()
 
-    inputter = FileInputter(EXAMPLE_PATH, chunk_size=32)
-    encoder = SimpleGf4ParityEncoder()
+    # we will use a small RS code for this example (bytes)
+    inputter = FileInputter(EXAMPLE_PATH, chunk_size=4)
+    encoder = ReedSolomonEncoder(n=8, k=4)
     mapper = RotatingMapper()
 
     # compose channel: duplicate copies per strand then apply IDS mutations
-    dup = SoupDuplicator(copies=5)
-    ids = IDSChannel(sub_p=0.1, del_p=0.0001, seed=2025)
+    dup = SoupDuplicator(copies=100)
+    ids = IDSChannel(sub_p=0.1, del_p=0.05, seed=2020)
     channel = ChainedChannel(dup, ids)
 
-    decoder = SimpleGf4ParityDecoder(mapper)
-    outputter = YamlOutputter()
+    aligner = SimpleAligner()
+    decoder = ReedSolomonDecoder(n=8, k=4, mapper=mapper)
+    outputter = YamlOutputter("output.yaml")
 
-    pipeline = Pipeline(inputter, encoder, mapper, channel, decoder, outputter)
+    pipeline = Pipeline(inputter, encoder, mapper, channel, decoder, outputter, aligner=aligner)
     pipeline.run()
+    print("Original message written to YAML output.")
 
 
 if __name__ == "__main__":
