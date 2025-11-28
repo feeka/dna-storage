@@ -26,6 +26,8 @@ class Pipeline:
         decoder: Decoder,
         outputter: Outputter,
         aligner: Aligner | None = None,
+        oligo_len: int = 150,
+        overhead: int = 40,
     ) -> None:
         self.inputter = inputter
         self.encoder = encoder
@@ -34,6 +36,26 @@ class Pipeline:
         self.decoder = decoder
         self.outputter = outputter
         self.aligner = aligner
+        # optional oligo sizing check (defaults chosen to practical values)
+        self.oligo_len = oligo_len
+        self.overhead = overhead
+
+        # If an encoder exposes 'n' (codeword length in bytes), check whether
+        # it fits typical oligo parameters and print a warning if not.
+        try:
+            from dna_storage.utils.oligo_utils import recommend_rs_parameters
+
+            if hasattr(encoder, "n"):
+                rec = recommend_rs_parameters(self.oligo_len, self.overhead)
+                n_max = rec.get("n_max", 0)
+                enc_n = getattr(encoder, "n")
+                if enc_n > n_max:
+                    print(
+                        f"[pipeline warning] encoder.n={enc_n} may be too large for oligo_len={self.oligo_len} (n_max={n_max}); consider lowering n or increasing oligo_len/ reducing overhead"
+                    )
+        except Exception:
+            # non-fatal: utilities may not be available or encoder is custom
+            pass
 
     def run(self) -> object:
         # Read messages

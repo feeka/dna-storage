@@ -8,6 +8,7 @@ from dna_storage.components.channel.soup_duplicator import SoupDuplicator
 from dna_storage.components.channel.ids_channel import IDSChannel
 from dna_storage.components.aligner.simple_aligner import SimpleAligner
 from dna_storage.components.decoder.reed_solomon import ReedSolomonDecoder
+from dna_storage.utils.oligo_utils import recommend_rs_parameters, pretty_recommendation
 from dna_storage.components.outputter.yaml_outputter import YamlOutputter
 
 
@@ -34,18 +35,26 @@ class ChainedChannel:
 def main():
     #make_example_file()
 
-    # we will use a small RS code for this example (bytes)
-    inputter = FileInputter(EXAMPLE_PATH, chunk_size=4)
-    encoder = ReedSolomonEncoder(n=8, k=4)
+    # Oligo sizing / RS parameter recommendation
+    oligo_len = 100
+    overhead = 20
+    print(pretty_recommendation(oligo_len, overhead))
+    rec = recommend_rs_parameters(oligo_len, overhead)
+    n = rec["recommended"]["n"]
+    k = rec["recommended"]["k"]
+
+    # choose chunk_size to match k (bytes per message -> one RS block)
+    inputter = FileInputter(EXAMPLE_PATH, chunk_size=k)
+    encoder = ReedSolomonEncoder(n=n, k=k)
     mapper = RotatingMapper()
 
     # compose channel: duplicate copies per strand then apply IDS mutations
-    dup = SoupDuplicator(copies=100)
+    dup = SoupDuplicator(copies=1000)
     ids = IDSChannel(sub_p=0.1, del_p=0.05, seed=2020)
     channel = ChainedChannel(dup, ids)
 
     aligner = SimpleAligner()
-    decoder = ReedSolomonDecoder(n=8, k=4, mapper=mapper)
+    decoder = ReedSolomonDecoder(n=n, k=k, mapper=mapper)
     outputter = YamlOutputter("output.yaml")
 
     pipeline = Pipeline(inputter, encoder, mapper, channel, decoder, outputter, aligner=aligner)

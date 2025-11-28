@@ -21,6 +21,15 @@ Follow these short guidelines so contributions are fast and useful.
    - For breaking changes increment MAJOR; new features increment MINOR; fixes increment PATCH.
    - Add a `CHANGELOG.md` entry under `Unreleased` for any change that should be recorded.
 
+Release checklist
+- Update `CHANGELOG.md` (move Unreleased entries to the new version header)
+- Bump `VERSION` file to the new version (e.g. 0.1.0 → 0.2.0)
+- Run the test suite and ensure CI passes
+- Tag the commit in git: `git tag vX.Y.Z` and push the tag
+
+Notes on unstable APIs
+- This repository is actively changing — maintainers may make breaking changes in minor versions until we've reached a stable 1.0.0.
+
 6. License & code of conduct
    - Respect the repository license. If you add external code, ensure compatible licensing and attribution.
 

@@ -1,5 +1,6 @@
 from .gf4 import *
 from .gf256 import *
+from .oligo_utils import recommend_rs_parameters, pretty_recommendation
 
 __all__ = [
 	"to_gf4_symbols",
