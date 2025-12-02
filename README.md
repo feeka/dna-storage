@@ -1,52 +1,63 @@
-## DNA Storage — modular DNA-as-storage prototype - in progress...
+# rs-dna-pipeline
+
+Modular Reed–Solomon pipeline for DNA data storage experiments
+Pure Python 3.9+ framework with pluggable components and realistic error simulation
 
 
-### Short, to-the-point status
-- Purpose: a lightweight, modular framework for experimenting with DNA-based storage pipelines (input → encode → map → channel → align → decode → output).
-- Status: Work in progress — prototype components included for GF(4) and GF(256)/Reed–Solomon experiments, a simple aligner and channel simulators. Not production-ready.
-- Versioning: semantic versioning (see `VERSION` + `CHANGELOG.md`). This repository is now at v0.1.0 as a first feature release (see CHANGELOG).
+## Features (v0.2.0 – December 2025)
 
-### Quick run (Python 3.8+)
+- Reed–Solomon encoder/decoder over GF(256) – interpolation-based erasure recovery
+- Automatic (k,n) recommendation for given oligo length and overhead (`pretty_recommendation`)
+- Fully pluggable pipeline: Input → Encoder → Mapper → Channel → Aligner → Decoder → Output
+- Simple global aligner + per-oligo consensus
+- Channel models: substitution, insertion, deletion, coverage dropout
+- Safety checks: warns when RS block size exceeds available oligo payload
 
-``` python3 -m dna_storage.examples.basic_rs_pipeline ```
+## Quick start
 
-#### If you plan to use this for research or experiments note:
-- Tools are small prototypes, not production ECC/mapping/synthesis models.
-- Expect API changes as encoders/decoders and alignment strategies evolve.
+git clone https://github.com/feeka/rs-dna-pipeline.git
+cd rs-dna-pipeline
+python3 -m venv venv && source venv/bin/activate
+pip install -e .
+python3 -m dna_storage.examples.basic_rs_pipeline
 
-#### New features since 0.0.1
-- Reed–Solomon encoder/decoder (GF(256)) — encoder evaluates message polynomial at n points; decoder can reconstruct from k correct evaluations (interpolation-based erasure recovery).
-- Oligo helper utilities — `recommend_rs_parameters` and `pretty_recommendation` to compute safe RS/oligo sizes for a target oligo length and overhead (useful to select `chunk_size`, `n`, `k`).
-- Simple aligner & improved pipeline — pipeline accepts an optional `aligner` and groups reads for per-oligo consensus to improve indel recovery.
-- Pipeline-size check — Pipeline will warn (by default) when an encoder’s `n` is too large for the configured oligo length/overhead.
+## Benchmark (will be added this week)
 
-Quick example showing oligo helper (python):
+| Error model                  | Redundancy | Recovery rate |
+|------------------------------|------------|---------------|
+| clean channel                | ?? %       | ?? %          |
+| 0.5 % sub + 0.5 % indel      | ?? %       | ?? %          |
+| 1.0 % sub + 1.0 % indel      | ?? %       | ?? %          |
+| 2.0 % indel                  | ?? %       | ?? %          |
 
-```py
-from dna_storage.utils.oligo_utils import pretty_recommendation
-print(pretty_recommendation(150, 40))
-```
+Script and plot will be placed in benchmarks/.
 
-Using the pipeline with oligo checks and RS
-- Examples now compute recommended n/k and set `FileInputter(chunk_size=k)` to ensure we map RS blocks into practical oligo sizes. See `dna_storage/examples/basic_rs_pipeline.py`.
-- dna_storage/core: abstract interfaces + pipeline runner
-- dna_storage/components: pluggable modules (inputter, encoder, mapper, channel, aligner, decoder, outputter)
-- dna_storage/utils: GF(4) / GF(256) helpers and small utilities
-- examples/: minimal runnable examples + demo input
+## Directory layout
 
-Why this is useful
-- Educational, experimental scaffold to plug in different encoders, mappers and channel models.
-- Small, readable implementations so it’s easy to extend or swap components during R&D.
+dna_storage/
+├── core/         # pipeline runner and abstract interfaces
+├── components/   # encoder, mapper, channel, aligner, decoder, …
+├── utils/        # GF(4)/GF(256) helpers, oligo utilities
+├── examples/     # working end-to-end pipelines
+└── benchmarks/   # (future reproducible results)
 
-If you plan to use this for research or experiments note:
-- Tools are small prototypes, not production ECC/mapping/synthesis models.
-- Expect API changes as encoders/decoders and alignment strategies evolve.
+## Usage
 
-Where to look next
-- `dna_storage/examples/basic_rs_pipeline.py` — complete end-to-end toy pipeline.
-- `dna_storage/components/encoder` and `decoder` — toy GF(4) and GF(256)/RS examples.
+See dna_storage/examples/basic_rs_pipeline.py for a complete working example.
 
-Contact & license
-- This repo is MIT/exp permissive — contact via GitHub issues for questions.
+## Citation (after DOI is created)
 
-Thanks — PRs, issues and contributions welcome. See `CONTRIBUTING.md` for workflow and versioning policy.
+@software{feeka_rs_dna_pipeline_2025,
+  author = {feeka},
+  title = {rs-dna-pipeline: Modular Reed--Solomon pipeline for DNA data storage},
+  year = {2025},
+  publisher = {Zenodo},
+  doi = {10.5281/zenodo.XXXXXXX},
+  url = {https://github.com/feeka/rs-dna-pipeline}
+}
+
+## License
+
+MIT – see LICENSE
+
+Issues and pull requests welcome.

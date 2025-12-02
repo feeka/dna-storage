@@ -50,7 +50,7 @@ def main():
 
     # compose channel: duplicate copies per strand then apply IDS mutations
     dup = SoupDuplicator(copies=1000)
-    ids = IDSChannel(sub_p=0.1, del_p=0.05, seed=2020)
+    ids = IDSChannel(sub_p=0.1, del_p=0.08, seed=2020)
     channel = ChainedChannel(dup, ids)
 
     aligner = SimpleAligner()

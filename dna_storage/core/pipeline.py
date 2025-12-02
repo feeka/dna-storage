@@ -61,6 +61,11 @@ class Pipeline:
         # Read messages
         messages = list(self.inputter.read())
 
+        # keep a copy of the original concatenated payload so we can trim
+        # any decoder-side padding (decoders often reconstruct fixed k-byte
+        # chunks and may produce a slightly longer stream).
+        original_all = b"".join(messages)
+
         # Encode each message into codewords
         codewords = [self.encoder.encode(m) for m in messages]
 
@@ -99,11 +104,21 @@ class Pipeline:
         # Decode back to bytes
         decoded = self.decoder.decode(reads)
 
+        # Trim decoder output to the original payload length; some decoders
+        # (eg. RS) always reconstruct fixed k-byte blocks and will produce
+        # extra padding for the last block. Trim to match the original input
+        # bytes for fair comparison and downstream writing.
+        try:
+            decoded = decoded[: len(original_all)]
+        except Exception:
+            # if slicing fails for some reason, keep original decoded
+            pass
+
         # Try comparing with original (concatenate original messages)
         try:
             from dna_storage.utils.compare import compare_bytes, pretty_report
 
-            original_all = b"".join(messages)
+            # original_all already computed earlier
             cmp = compare_bytes(original_all, decoded)
             report = pretty_report(original_all, decoded)
         except Exception:
@@ -113,6 +128,11 @@ class Pipeline:
         # Output decoded payload
         self.outputter.write(decoded)
 
-        # Print comparison summary to stdout and return details to caller
-        print("--- compare report:\n" + report)
+        # Print comparison summary to stdout (only when outputter isn't silenced)
+        try:
+            outpath = getattr(self.outputter, "outpath", None)
+        except Exception:
+            outpath = None
+        if outpath is None:
+            print("--- compare report:\n" + report)
         return cmp
