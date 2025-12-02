@@ -15,22 +15,23 @@ Pure Python 3.9+ framework with pluggable components and realistic error simulat
 
 ## Quick start
 
-git clone https://github.com/feeka/rs-dna-pipeline.git
+git clone https://github.com/feeka/dna-storage.git
 cd rs-dna-pipeline
 python3 -m venv venv && source venv/bin/activate
 pip install -e .
 python3 -m dna_storage.examples.basic_rs_pipeline
 
-## Benchmark (will be added this week)
+## What we did here (short)
 
-| Error model                  | Redundancy | Recovery rate |
-|------------------------------|------------|---------------|
-| clean channel                | ?? %       | ?? %          |
-| 0.5 % sub + 0.5 % indel      | ?? %       | ?? %          |
-| 1.0 % sub + 1.0 % indel      | ?? %       | ?? %          |
-| 2.0 % indel                  | ?? %       | ?? %          |
+We ran a set of Grass-style, message-level Reed–Solomon experiments that
+measure average payload recovery across different outer-RS redundancy levels.
+The run outputs are collected in `bench_rs.csv` and visualised below.
 
-Script and plot will be placed in benchmarks/.
+![Recovery vs redundancy](bench_rs.recovery.pretty.png)
+
+## Benchmarks
+
+This repository includes example benchmarking scripts and plotting utilities under `examples/` that produce reproducible CSV and PNG artifacts (e.g. `bench_rs.csv`, `bench_rs.recovery.pretty.png`).
 
 ## Directory layout
 
@@ -38,23 +39,43 @@ dna_storage/
 ├── core/         # pipeline runner and abstract interfaces
 ├── components/   # encoder, mapper, channel, aligner, decoder, …
 ├── utils/        # GF(4)/GF(256) helpers, oligo utilities
-├── examples/     # working end-to-end pipelines
-└── benchmarks/   # (future reproducible results)
+├── examples/     # working end-to-end pipelines and bench scripts
+└── benchmarks/   # reproducible benchmark outputs & analysis
 
 ## Usage
 
-See dna_storage/examples/basic_rs_pipeline.py for a complete working example.
+See `dna_storage/examples/basic_rs_pipeline.py` for a complete working example.
 
-## Citation (after DOI is created)
+Mini usage (benchmarks & plotting)
 
-@software{feeka_rs_dna_pipeline_2025,
-  author = {feeka},
-  title = {rs-dna-pipeline: Modular Reed--Solomon pipeline for DNA data storage},
-  year = {2025},
-  publisher = {Zenodo},
-  doi = {10.5281/zenodo.XXXXXXX},
-  url = {https://github.com/feeka/rs-dna-pipeline}
-}
+- Run an ECC-only benchmark (trials, comma-list of redundancies, copies):
+
+```bash
+python3 examples/benchmark_rs.py 100 0.02,0.05,0.07,0.10,0.12 15
+```
+
+- Generate a nicer recovery plot from the CSV produced above:
+
+```bash
+python3 examples/plot_recovery_pretty.py bench_rs.csv
+```
+
+- Parse the run log (or per-redundancy CSV) and produce the successes bar chart:
+
+```bash
+python3 examples/plot_successes.py bench_rs_successes_final.csv
+```
+
+Output files you should see in the repo root after running the bench above:
+
+- `bench_rs.csv` — mean/std mean percent recovered per redundancy
+- `bench_rs.recovery.pretty.png` — the recovery plot (illustrated above)
+- `bench_rs_successes_final.csv` — final per-redundancy success counts
+- `bench_rs_successes_final.pretty.png` — annotated successes bar chart
+
+## Citation
+
+If you use this code in published work, please cite the repository URL and add an entry appropriate to your citation style.
 
 ## License
 
