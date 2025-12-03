@@ -32,9 +32,7 @@ We ran a set of [Prof. Robert Grass-style](https://doi.org/10.1002/anie.20141137
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
-<div align="center">
-	<img src="bench_rs.png" alt="Recovery vs error" width="460" />
-</div>
+![Recovery — pretty view](bench_rs.png)
 
 Very short — likely causes for low recovery
 
