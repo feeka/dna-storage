@@ -21,22 +21,20 @@ Clone, create a virtualenv, install, and run the example (copy/paste):
 git clone https://github.com/feeka/dna-storage.git
 cd dna-storage
 # create & activate a venv called .venv (recommended)
-python3 -m venv .venv
 source .venv/bin/activate
 python3 -m dna_storage.examples.basic_rs_pipeline
 ```
 
 ## As an experiment what is done here (short)
-
 The setup runs a set based on [this paper](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
+-- Full (long) experiment (default):
 ![Recovery — pretty view](bench_rs.png)
 
 Very short — likely causes for low recovery
 
-- aligner is too simple (indels break consensus)
 - deletions shift symbol packing → erasures
 - RS decoder is erasure-only (no substitution correction)
 - low coverage or too-small parity makes recovery fragile
@@ -45,32 +43,32 @@ Very short — likely causes for low recovery
 
 This repository includes example benchmarking scripts and plotting utilities under `examples/` that produce reproducible CSV and PNG artifacts (e.g. `bench_rs.csv`, `bench_rs.png`).
 
-Experiment: controlled IDS-error sweep (staple behaviour)
+Experiment: controlled IDS-error experiment (staple behaviour)
 -----------------------------------------------------
 
-A reproducible experiment that sweeps the total per-base error (substitutions + deletions)
+A reproducible experiment that runs a series of total per-base error levels (substitutions + deletions)
 across a fixed set of levels and measures average payload recovery using only message-level (outer) Reed–Solomon is included.
 
-Key parameters used by the canonical sweep (configurable in `examples/benchmark_rs.py`):
+- Toy experiment (quick example — matches current bench_rs.csv)
 
-- Error total S values: 0.02 → 0.20 in steps of 0.02 (i.e. 0.02, 0.04, …, 0.20)
-	- NOTE: S is the per-base IDS error fraction (S = sub_p + del_p); plots show S on the x-axis as a percentage (S * 100). IDSChannel simulates substitutions + deletions (no insertions), so S only includes those two error types.
-- Trials per S: 100
-- Payload length per trial L: uniformly sampled from [500, 700] bytes
-- Error split rule (Option B — constrained, recommended): sub_p ∈ [0.2*S, 0.8*S] chosen uniformly; del_p = S - sub_p
-- Coverage (copies): 20 (per trial)
-- Default RS redundancy used by the canonical sweep: 0.15 (15%)
+- Error total S values: 0.02 → 0.10 in steps of 0.02 (0.02, 0.04, 0.06, 0.08, 0.10)
+	- NOTE: S is the per-base IDS error fraction (S = sub_p + del_p); plots show S on the x-axis as a percentage (S * 100). IDSChannel simulates substitutions + deletions.
+- Trials per S: 10 (fast sample for debugging and figure previews)
+- Payload length per trial L: fixed at 500 bytes
+- Error split rule: sub_p ∈ [0.2*S, 0.8*S] selected per-trial; del_p = S - sub_p
+- Coverage (copies): 60 reads per oligo (current run)
+- RS redundancy used: 0.15 (15%)
 - Pipeline behaviour: exactly the `basic_rs_pipeline` flow (Reed–Solomon encoder/decoder, rotating mapper, SoupDuplicator, IDSChannel, SimpleAligner)
 
 Notes:
 - The script uses the constrained split so each trial preserves the requested total error S but varies the ratio of deletion vs substitution.
-- The pipeline also converts alignment failures into explicit erasures so the message-level RS decoder can repair missing symbols.
+- The aligner produces a single per-oligo consensus which may be shorter than the original codeword when deletions occur; those missing positions reduce the number of available codeword evaluations and can cause the RS decoder to be unable to reconstruct the message (the current RS decoder requires >= k correct byte-evaluations per block).
 - Results are written to `bench_rs.csv` and plotted with the existing plotting scripts.
 
-To run the canonical sweep (defaults):
+To run the full (long) experiment (defaults):
 
 ```bash
-python3 examples/benchmark_rs.py    # runs the S sweep with defaults (100 trials × 10 S values)
+python3 examples/benchmark_rs.py    # runs the S series with defaults (100 trials × 10 S values)
 ```
 
 You can override parameters on the CLI — see header of `examples/benchmark_rs.py` for syntax.
@@ -103,7 +101,7 @@ See `dna_storage/examples/basic_rs_pipeline.py` for a complete working example.
 
 Mini usage (benchmarks & plotting)
 
-Quick test & canonical run
+Quick test & full (long) experiment
 
 - Smoke test (fast, sanity-check; outputs bench_rs.csv):
 
@@ -112,7 +110,7 @@ Quick test & canonical run
 python3 examples/benchmark_rs.py 3 0.15 20 500 500 0.02:0.06:0.02
 ```
 
-- Full canonical sweep (default):
+-- Full (long) experiment (default):
 
 ```bash
 # runs trials=100, redundancy=0.15, copies=20, payloads=500..700, S=0.02..0.20
@@ -137,10 +135,7 @@ python3 examples/plot_recovery_vs_error.py bench_rs.csv
 python3 examples/plot_successes.py successes
 ```
 
-Output files you should see in the repo root after running the bench above:
 
-- `bench_rs.csv` — mean/std mean percent recovered per redundancy
-- `bench_rs.png` — the recovery plot (illustrated above)
 
 
 ## Citation
