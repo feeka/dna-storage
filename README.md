@@ -26,9 +26,9 @@ source .venv/bin/activate
 python3 -m dna_storage.examples.basic_rs_pipeline
 ```
 
-## What we did here (short)
+## As an experiment what is done here (short)
 
-We ran a set based on [this paper](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
+The setup runs a set based on [this paper](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
@@ -48,8 +48,8 @@ This repository includes example benchmarking scripts and plotting utilities und
 Experiment: controlled IDS-error sweep (staple behaviour)
 -----------------------------------------------------
 
-We include a reproducible experiment that sweeps the total per-base error (substitutions + deletions)
-across a fixed set of levels and measures average payload recovery using only message-level (outer) Reed–Solomon.
+A reproducible experiment that sweeps the total per-base error (substitutions + deletions)
+across a fixed set of levels and measures average payload recovery using only message-level (outer) Reed–Solomon is included.
 
 Key parameters used by the canonical sweep (configurable in `examples/benchmark_rs.py`):
 
@@ -64,7 +64,7 @@ Key parameters used by the canonical sweep (configurable in `examples/benchmark_
 
 Notes:
 - The script uses the constrained split so each trial preserves the requested total error S but varies the ratio of deletion vs substitution.
-- We also convert alignment failures into explicit erasures so the message-level RS decoder can repair missing symbols.
+- The pipeline also converts alignment failures into explicit erasures so the message-level RS decoder can repair missing symbols.
 - Results are written to `bench_rs.csv` and plotted with the existing plotting scripts.
 
 To run the canonical sweep (defaults):
