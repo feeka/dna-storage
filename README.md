@@ -1,7 +1,7 @@
-# rs-dna-pipeline
+# rs-dna-pipeline ✨
 
-Modular Reed–Solomon pipeline for DNA data storage experiments
-Pure Python 3.9+ framework with pluggable components and realistic error simulation
+Compact, modular Reed–Solomon pipelines and reproducible benchmarks for DNA data storage experiments.
+Pure Python 3.9+ — quick to run, easy to extend.
 
 
 ## Features (v0.2.0 – December 2025)
@@ -15,24 +15,32 @@ Pure Python 3.9+ framework with pluggable components and realistic error simulat
 
 ## Quick start
 
+Clone, create a virtualenv, install, and run the example (copy/paste):
+
+```bash
 git clone https://github.com/feeka/dna-storage.git
 cd dna-storage
-python3 -m venv venv && source venv/bin/activate
-pip install -e .
+# create & activate a venv called .venv (recommended)
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m dna_storage.examples.basic_rs_pipeline
+```
 
 ## What we did here (short)
 
 We ran a set of [Prof. Robert Grass-style](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
 measure average payload recovery across different outer-RS redundancy levels.
-The run outputs are collected in `bench_rs.csv` and visualised below.
+Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
-![Recovery — pretty view](bench_rs.png)
+<div align="center">
+	<img src="bench_rs.png" alt="Recovery vs error" width="460" />
+</div>
 
 Very short — likely causes for low recovery
+
 - aligner is too simple (indels break consensus)
-- deletions shift symbol packing and cause many erasures
-- RS decoder is erasure-only (cannot fix substitutions)
+- deletions shift symbol packing → erasures
+- RS decoder is erasure-only (no substitution correction)
 - low coverage or too-small parity makes recovery fragile
 
 ## Benchmarks
