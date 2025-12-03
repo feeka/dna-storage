@@ -28,7 +28,7 @@ python3 -m dna_storage.examples.basic_rs_pipeline
 
 ## What we did here (short)
 
-We ran a set of [Prof. Robert Grass-style](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
+We ran a set based on [this paper](https://doi.org/10.1002/anie.201411378), message-level Reed–Solomon experiments that
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
