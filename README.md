@@ -27,7 +27,7 @@ We ran a set of [Prof. Robert Grass-style](https://doi.org/10.1002/anie.20141137
 measure average payload recovery across different outer-RS redundancy levels.
 The run outputs are collected in `bench_rs.csv` and visualised below.
 
-![Recovery — pretty view](bench_rs.recovery.pretty.png)
+![Recovery — pretty view](bench_rs.png)
 
 Very short — likely causes for low recovery
 - aligner is too simple (indels break consensus)
