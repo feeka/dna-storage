@@ -5,19 +5,7 @@ Pure Python 3.9+ — quick to run, easy to extend.
 
 Pipeline overview (visual)
 
-[Open the pipeline diagram (PDF)](schema.pdf)
-
-<!--
-If your Markdown renderer supports inline previews for PDFs, the file
-below may show a preview. Otherwise click the link above to open the
-`schema.pdf` file that lives at the project root.
--->
-
-<p align="center">
-	<a href="schema.pdf">Open pipeline diagram (schema.pdf)</a>
-</p>
-
-
+![Schema](schema.png)
 
 ## Features (v0.2.0 – December 2025)
 
