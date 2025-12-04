@@ -5,7 +5,11 @@ Pure Python 3.9+ — quick to run, easy to extend.
 
 Pipeline overview (visual)
 
-![Schema](schema.webp)
+<p align="center">
+	<a href="schema.pdf">
+		<img src="schema.webp" alt="Schema" style="width:60%; max-width:1100px; height:auto; border:0;" />
+	</a>
+</p>
 
 ## Features (v0.2.0 – December 2025)
 
