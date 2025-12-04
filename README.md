@@ -6,13 +6,22 @@ Pure Python 3.9+ — quick to run, easy to extend.
 Pipeline overview (visual)
 
 ```mermaid
-graph LR
+graph TD
 	A[Input File] --> B[RS Encoder]
 	B --> C[Base Mapper]
 	C --> D[Channel Noise]
 	D --> E[Global Aligner]
 	E --> F[RS Decoder]
 	F --> G[Output File]
+
+	%% Palette: #264653, #2a9d8f, #8ab17d, #f4a261, #e76f51, #e9c46a
+	style A fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
+	style B fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
+	style C fill:#8ab17d,stroke:#5d8a5a,stroke-width:2px,color:#ffffff
+	style D fill:#f4a261,stroke:#c97a3f,stroke-width:2px,color:#1a1a1a
+	style E fill:#e76f51,stroke:#a94a31,stroke-width:2px,color:#ffffff
+	style F fill:#e9c46a,stroke:#c0a843,stroke-width:2px,color:#1a1a1a
+	style G fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
 ```
 
 
