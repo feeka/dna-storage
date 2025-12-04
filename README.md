@@ -4,6 +4,9 @@ Compact, modular Reed–Solomon pipelines and reproducible benchmarks for DNA da
 Pure Python 3.9+ — quick to run, easy to extend.
 
 
+Text alternative: Input File → RS Encoder → Base Mapper → Channel Noise → Global Aligner → RS Decoder → Output File
+
+
 ## Features (v0.2.0 – December 2025)
 
 - Reed–Solomon encoder/decoder over GF(256) – interpolation-based erasure recovery
@@ -30,6 +33,8 @@ The setup runs a set based on [this paper](https://doi.org/10.1002/anie.20141137
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
+Note: the plots show mean percent payload recovered on the Y axis. The error-vs plot uses total IDS error S = substitutions + deletions on the X axis (S shown as a percent); the pretty plot uses outer-RS redundancy on the X axis.
+
 -- Full (long) experiment (default):
 ![Recovery — pretty view](bench_rs.png)
 
@@ -38,6 +43,19 @@ Very short — likely causes for low recovery
 - deletions shift symbol packing → erasures
 - RS decoder is erasure-only (no substitution correction)
 - low coverage or too-small parity makes recovery fragile
+
+Pipeline overview (visual)
+
+```mermaid
+graph LR
+	A[Input File] --> B[RS Encoder]
+	B --> C[Base Mapper]
+	C --> D[Channel Noise]
+	D --> E[Global Aligner]
+	E --> F[RS Decoder]
+	F --> G[Output File]
+```
+
 
 ## Benchmarks
 
