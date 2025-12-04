@@ -14,13 +14,14 @@ graph TD
 	E --> F[RS Decoder]
 	F --> G[Output File]
 
-	%% Palette: #264653, #2a9d8f, #8ab17d, #f4a261, #e76f51, #e9c46a
+	%% Two-color palette (primary + accent) borrowed from the pretty plot
+	%% Primary: #264653 (dark teal), Accent: #2a9d8f (green)
 	style A fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
 	style B fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
-	style C fill:#8ab17d,stroke:#5d8a5a,stroke-width:2px,color:#ffffff
-	style D fill:#f4a261,stroke:#c97a3f,stroke-width:2px,color:#1a1a1a
-	style E fill:#e76f51,stroke:#a94a31,stroke-width:2px,color:#ffffff
-	style F fill:#e9c46a,stroke:#c0a843,stroke-width:2px,color:#1a1a1a
+	style C fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
+	style D fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
+	style E fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
+	style F fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
 	style G fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
 ```
 
@@ -63,17 +64,7 @@ Very short — likely causes for low recovery
 - RS decoder is erasure-only (no substitution correction)
 - low coverage or too-small parity makes recovery fragile
 
-Pipeline overview (visual)
-
-```mermaid
-graph LR
-	A[Input File] --> B[RS Encoder]
-	B --> C[Base Mapper]
-	C --> D[Channel Noise]
-	D --> E[Global Aligner]
-	E --> F[RS Decoder]
-	F --> G[Output File]
-```
+<!-- (removed duplicate LR pipeline — top-down version above uses the two-color palette) -->
 
 
 ## Benchmarks
