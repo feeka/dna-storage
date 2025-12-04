@@ -5,25 +5,17 @@ Pure Python 3.9+ — quick to run, easy to extend.
 
 Pipeline overview (visual)
 
-```mermaid
-graph TD
-	A[Input File] --> B[RS Encoder]
-	B --> C[Base Mapper]
-	C --> D[Channel Noise]
-	D --> E[Global Aligner]
-	E --> F[RS Decoder]
-	F --> G[Output File]
+[Open the pipeline diagram (PDF)](schema.pdf)
 
-	%% Two-color palette (primary + accent) borrowed from the pretty plot
-	%% Primary: #264653 (dark teal), Accent: #2a9d8f (green)
-	style A stroke:#1f3a3a,stroke-width:2px
-	style B stroke:#196459,stroke-width:2px
-	style C stroke:#1f3a3a,stroke-width:2px
-	style D stroke:#196459,stroke-width:2px
-	style E stroke:#1f3a3a,stroke-width:2px
-	style F stroke:#196459,stroke-width:2px
-	style G stroke:#1f3a3a,stroke-width:2px
-```
+<!--
+If your Markdown renderer supports inline previews for PDFs, the file
+below may show a preview. Otherwise click the link above to open the
+`schema.pdf` file that lives at the project root.
+-->
+
+<p align="center">
+	<a href="schema.pdf">Open pipeline diagram (schema.pdf)</a>
+</p>
 
 
 
