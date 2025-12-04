@@ -16,13 +16,13 @@ graph TD
 
 	%% Two-color palette (primary + accent) borrowed from the pretty plot
 	%% Primary: #264653 (dark teal), Accent: #2a9d8f (green)
-	style A fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
-	style B fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
-	style C fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
-	style D fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
-	style E fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
-	style F fill:#2a9d8f,stroke:#196459,stroke-width:2px,color:#ffffff
-	style G fill:#264653,stroke:#1f3a3a,stroke-width:2px,color:#ffffff
+	style A stroke:#1f3a3a,stroke-width:2px
+	style B stroke:#196459,stroke-width:2px
+	style C stroke:#1f3a3a,stroke-width:2px
+	style D stroke:#196459,stroke-width:2px
+	style E stroke:#1f3a3a,stroke-width:2px
+	style F stroke:#196459,stroke-width:2px
+	style G stroke:#1f3a3a,stroke-width:2px
 ```
 
 
