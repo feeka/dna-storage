@@ -3,8 +3,18 @@
 Compact, modular Reed–Solomon pipelines and reproducible benchmarks for DNA data storage experiments.
 Pure Python 3.9+ — quick to run, easy to extend.
 
+Pipeline overview (visual)
 
-Text alternative: Input File → RS Encoder → Base Mapper → Channel Noise → Global Aligner → RS Decoder → Output File
+```mermaid
+graph LR
+	A[Input File] --> B[RS Encoder]
+	B --> C[Base Mapper]
+	C --> D[Channel Noise]
+	D --> E[Global Aligner]
+	E --> F[RS Decoder]
+	F --> G[Output File]
+```
+
 
 
 ## Features (v0.2.0 – December 2025)
