@@ -21,7 +21,7 @@ Pipeline overview (visual)
 - Safety checks: warns when RS block size exceeds available oligo payload
 
 > [!NOTE]
-> Current implementation of the library handles only substitutions and insertions as the RS encoder and Decoder are simple erasure** 
+> __Current implementation of the library handles only substitutions and insertions as the RS encoder and Decoder are simple erasure__ 
 
 ## Exciting: the upcoming version 0.3
 - If we know that there are no insertions in the sequence we can simply filter the traces by lengths. 
