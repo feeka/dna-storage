@@ -19,6 +19,7 @@ Pipeline overview (visual)
 - Simple global aligner + per-oligo consensus
 - Channel models: substitution, insertion, deletion, coverage dropout
 - Safety checks: warns when RS block size exceeds available oligo payload
+- **Current implementation of the library handles only substitutions and insertions**
 
 ## Quick start
 
@@ -37,7 +38,7 @@ The setup runs a set based on [this paper](https://doi.org/10.1002/anie.20141137
 measure average payload recovery across different outer-RS redundancy levels.
 Outputs are collected in `bench_rs.csv`. Representative visualizations below.
 
-Note: the plots show mean percent payload recovered on the Y axis. The error-vs plot uses total IDS error S = substitutions + deletions on the X axis (S shown as a percent); the pretty plot uses outer-RS redundancy on the X axis.
+Note: the plots show mean percent payload recovered on the Y axis. The error-vs plot uses total DS error S = substitutions + deletions on the X axis (S shown as a percent); the pretty plot uses outer-RS redundancy on the X axis.
 
 -- Full (long) experiment (default):
 ![Recovery — pretty view](bench_rs.png)
@@ -55,7 +56,7 @@ Very short — likely causes for low recovery
 
 This repository includes example benchmarking scripts and plotting utilities under `examples/` that produce reproducible CSV and PNG artifacts (e.g. `bench_rs.csv`, `bench_rs.png`).
 
-Experiment: controlled IDS-error experiment (staple behaviour)
+Experiment: controlled DS-error experiment (staple behaviour)
 -----------------------------------------------------
 
 A reproducible experiment that runs a series of total per-base error levels (substitutions + deletions)
@@ -64,13 +65,13 @@ across a fixed set of levels and measures average payload recovery using only me
 - Toy experiment (quick example — matches current bench_rs.csv)
 
 - Error total S values: 0.02 → 0.10 in steps of 0.02 (0.02, 0.04, 0.06, 0.08, 0.10)
-	- NOTE: S is the per-base IDS error fraction (S = sub_p + del_p); plots show S on the x-axis as a percentage (S * 100). IDSChannel simulates substitutions + deletions.
+	- NOTE: S is the per-base DS error fraction (S = sub_p + del_p); plots show S on the x-axis as a percentage (S * 100). DSChannel simulates substitutions + deletions.
 - Trials per S: 10 (fast sample for debugging and figure previews)
 - Payload length per trial L: fixed at 500 bytes
 - Error split rule: sub_p ∈ [0.2*S, 0.8*S] selected per-trial; del_p = S - sub_p
 - Coverage (copies): 60 reads per oligo (current run)
 - RS redundancy used: 0.15 (15%)
-- Pipeline behaviour: exactly the `basic_rs_pipeline` flow (Reed–Solomon encoder/decoder, rotating mapper, SoupDuplicator, IDSChannel, SimpleAligner)
+- Pipeline behaviour: exactly the `basic_rs_pipeline` flow (Reed–Solomon encoder/decoder, rotating mapper, SoupDuplicator, DSChannel, SimpleAligner)
 
 Notes:
 - The script uses the constrained split so each trial preserves the requested total error S but varies the ratio of deletion vs substitution.
@@ -135,7 +136,7 @@ python3 examples/benchmark_rs.py
 python3 examples/plot_recovery_pretty.py bench_rs.csv
 ```
 
-- Generate recovery vs total-IDS-error plot (S on x-axis):
+- Generate recovery vs total-DS-error plot (S on x-axis):
 
 ```bash
 python3 examples/plot_recovery_vs_error.py bench_rs.csv
