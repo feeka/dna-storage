@@ -21,7 +21,7 @@ Pipeline overview (visual)
 - Safety checks: warns when RS block size exceeds available oligo payload
 
 > [!NOTE]
-> __Current implementation of the library handles only substitutions and insertions as the RS encoder and Decoder are simple erasure__ 
+> __Current implementation of the library handles only substitutions and deletions. Thus the channel in this iteration of the library is D(eletion)S(ubstitution) channel.__ 
 
 ## Exciting: the upcoming version 0.3
 - If we know that there are no insertions in the sequence we can simply filter the traces by lengths. 
