@@ -19,7 +19,15 @@ Pipeline overview (visual)
 - Simple global aligner + per-oligo consensus
 - Channel models: substitution, insertion, deletion, coverage dropout
 - Safety checks: warns when RS block size exceeds available oligo payload
-- **Current implementation of the library handles only substitutions and insertions**
+
+> [!NOTE]
+> Current implementation of the library handles only substitutions and insertions as the RS encoder and Decoder are simple erasure** 
+
+## Exciting: the upcoming version 0.3
+- If we know that there are no insertions in the sequence we can simply filter the traces by lengths. 
+- However, real world DNA storage systems introduce insertions thus real-world systems do not feed the raw consensus length to the RS decoder due to insertions and deletions. 
+- A better idea is to pad the consensus to exactly _N_ symbols that can correct _≤ (n-k)/2_, using either some kind of aligner or library edlib for measuring edit distances. 
+- Next iteration of this library adds an interesting algorithm for [trace reconstruction alignment](https://www.cell.com/iscience/fulltext/S2589-0042(25)02052-8) Bidirectional Beam Search in de Bruijn graphs paired smartly with adaptive Markov Models.  
 
 ## Quick start
 
