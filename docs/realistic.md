@@ -94,5 +94,3 @@ D. Practical metrics
 7. Conclusion
 
 ---
-
-If you'd like, I can now scaffold the `MLChannel` and dataset generator and prepare a minimal training run (RNN baseline) and small bench comparison; shall I begin with that? 
