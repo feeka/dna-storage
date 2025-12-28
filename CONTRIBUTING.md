@@ -42,4 +42,23 @@ python3 -m dna_storage.examples.basic_rs_pipeline
 python3 -m pytest -q
 ```
 
+ML extras (optional)
+
+If you want to run machine-learning experiments or train channel models, install the optional ML dependencies. You can install them with pip (PEP 621-style extras) or Poetry (extras):
+
+```bash
+# pip (from project root)
+pip install -e .[ml]
+
+# or with poetry
+poetry install --extras ml
+```
+
+Smoke training run (quick test):
+
+```bash
+# after installing ML extras, run a tiny training job on the toy dataset
+python3 examples/ml_train.py --data dna_storage/benchmarks/toy_synthetic/sample.ndjson --epochs 1 --out models/smoke_model
+```
+
 That's it — keep changes small and focused. Thanks! ✨

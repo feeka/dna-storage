@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DNA Storage — Project & Paper Ideas</title>
+  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:24px;line-height:1.5;max-width:900px}h1,h2,h3{color:#0B4; }code{background:#f6f8fa;padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<h1>DNA Storage — Project &amp; Paper Ideas</h1>
+
+<p><strong>About this repository :</strong></p>
+<ul>
+<li>Key components: <code>IDSChannel</code> (substitutions + deletions), <code>SoupDuplicator</code> (multiple reads), <code>SimpleAligner</code>, <code>RS</code> encoder/decoder (GF(256) interpolation erasure decoder), <code>RSInnerChannel</code>, mappers and oligo utilities.</li>
+<li>Benchmarks present (<code>examples/benchmark_rs.py</code> → <code>bench_rs.csv</code>) and plotting utilities.</li>
+<li>Current limitations: decoder is erasure-only (no substitution correction), channel omits insertions in many places, aligner is simple (not weighted/MSA), inner/outer coding modularity present.</li>
+</ul>
+<hr>
+
+<h2>Suggested Paper / Project Ideas</h2>
+
+<h3>1) ML-Driven Simulation &amp; Channel Modeling Framework</h3>
+<p><strong>Short title:</strong> "ML-Driven Simulation Framework for Adaptive Error Modeling in DNA Storage Channels" ✅</p>
+<p><strong>Abstract:</strong> Use ML (probabilistic sequence models, e.g., RNNs/transformers, or conditional VAEs) to learn per-base/substitution/insertion/deletion error profiles from real sequencing datasets or synthetic reads, and plug the learned model as a pluggable <code>Channel</code> in the repo.</p>
+<ul>
+<li><strong>Hypothesis:</strong> Learned channel models produce more realistic recovery curves and enable designing encoders (inner/outer) that are robust to real error distributions.</li>
+<li><strong>Required repo work:</strong> Add a trainable Channel API, dataset loader, model scaffolding, evaluation harness, and comparisons against parametric IDSChannel/SoupDuplicator.</li>
+<li><strong>Experiments &amp; metrics:</strong> likelihood on held-out reads, recovery (percent recovered) in bench_rs-style experiments, calibration tests, ablations vs hand-tuned channels.</li>
+</ul>
+
+<h3>2) Adaptive Decoding with ML-assisted Consensus &amp; Soft Inputs</h3>
+<p><strong>Short title:</strong> "Soft-Input Consensus and ML-assisted Decoders for DNA Storage" ⚡</p>
+<p><strong>Abstract:</strong> Replace SimpleAligner with an ML model that produces per-position soft beliefs (class probabilities or symbol logits) and feed soft inputs to an RS or neural decoder (learned or hybrid) that can use soft information to correct substitution/erasure patterns.</p>
+<ul>
+<li><strong>Hypothesis:</strong> Soft inputs increase effective code rate and reduce required redundancy under realistic error regimes.</li>
+<li><strong>Repo work:</strong> Modify aligner API to output probabilistic consensus; implement soft-input RS (list-decoding or approximations) or a neural decoder; extend pipeline to accept soft channels.</li>
+<li><strong>Experiments:</strong> Recovery vs redundancy curves at varying S and coverage, comparing hard consensus + RS vs soft consensus + decoder.</li>
+</ul>
+
+<h3>3) DSL for DNA Storage Pipelines (Reproducible Experiments &amp; Standards)</h3>
+<p><strong>Short title:</strong> "A DSL for Reproducible DNA Storage Experiments and Benchmarks" 🧩</p>
+<p><strong>Abstract:</strong> Design a small, declarative domain-specific language (YAML/JSON/mini-TOML) to describe full pipelines (input parameters, mapper, inner/outer codes, channel model, aligner, metrics), enabling reproducible, shareable experiments and standardizing reporting.</p>
+<ul>
+<li><strong>Hypothesis:</strong> A DSL reduces friction and improves reproducibility and benchmarking across groups.</li>
+<li><strong>Repo work:</strong> Implement parser and runner, CLI extension, example spec files, and a VSCode/JSON schema for validation.</li>
+<li><strong>Experiments:</strong> Reproduce existing bench runs, cross-validate with external published experiments.</li>
+</ul>
+
+<h3>4) Design-of-Experiments (DoE) for DNA Storage Parameter Optimization</h3>
+<p><strong>Short title:</strong> "Systematic DoE for Parameter Optimization in DNA Storage Pipelines" 🧪</p>
+<p><strong>Abstract:</strong> Use DoE and Bayesian optimization to explore the high-dimensional parameter space (oligo_len, RS n/k, inner-code rate, coverage, sub/del rates) to find Pareto-optimal trade-offs between redundancy, recovery, and cost.</p>
+<ul>
+<li><strong>Hypothesis:</strong> Automated DoE yields better encoder/oligo configurations than manual heuristics.</li>
+<li><strong>Repo work:</strong> Add DoE driver, wrappers for bench runs, logging and visualization dashboards.</li>
+<li><strong>Experiments:</strong> Multi-objective optimization, hyperparameter landscapes, recommended parameter tables.</li>
+</ul>
+
+<h3>5) Standards &amp; Benchmarking Suite (Datasets, Formats, Metrics)</h3>
+<p><strong>Short title:</strong> "Towards Standard Benchmarks for DNA Storage: Datasets, Metrics and Baselines" 📊</p>
+<ul>
+<li>Formalize a benchmark suite: curated channel datasets (simulated + public sequencing), canonical pipelines, baseline results and reporting formats (bench_rs.csv as a starting point).</li>
+<li>Start by adding dataset downloaders, canonical configs, CI tests to regenerate key plots, and a compact leaderboard.</li>
+</ul>
+
+<h3>6) Inner Code Design for Indel Resilience (VT/VT-like codes) and Analysis</h3>
+<ul>
+<li>Implement inner synchronization codes (VT), integrate into RSInnerChannel, and measure consensus behaviour.</li>
+</ul>
+
+<h3>7) Learned Mappers &amp; Constrained Sequence Design</h3>
+<ul>
+<li>Neural mappers to produce oligos that satisfy biology constraints while optimizing recoverability.</li>
+</ul>
+
+<h3>8) End-to-end Differentiable Pipeline &amp; Neural Decoders</h3>
+<ul>
+<li>Build differentiable surrogates for the pipeline to enable direct training of encoders/decoders.</li>
+</ul>
+
+<hr>
+
+<h2>Prioritization &amp; Quick-win recommendations</h2>
+<ol>
+<li>ML-Driven Channel Modeling (1) + integrate into <code>examples/benchmark_rs.py</code> — high impact, incremental on channel API. ✅</li>
+<li>Soft-consensus + soft-input decoder (2) — moderate complexity, strong expected gains.</li>
+<li>DSL for experiments (3) — medium effort, big reproducibility payoff.</li>
+<li>DoE harness (4) — good companion to any experiment-driven project.</li>
+<li>Standards &amp; Benchmarks (5) — ongoing community project; can start by formalizing <code>bench_rs.csv</code> schema.</li>
+</ol>
+
+<hr>
+
+<h2>Minimal Next Steps (implementation tasks)</h2>
+<ul>
+<li>Create <code>docs/project_ideas.md</code> (this file) and <code>docs/project_ideas.html</code> (HTML view).</li>
+<li>Add a training-ready Channel subclass skeleton (e.g. <code>MLChannel</code>) with a <code>fit</code> method and a <code>transmit</code> method.</li>
+<li>Add an <code>Aligner</code> interface change to allow probabilistic-consensus outputs.</li>
+<li>Add example configs (YAML) for a DSL prototype and an example experiment spec.</li>
+</ul>
+
+<hr>
+</body>
+</html>

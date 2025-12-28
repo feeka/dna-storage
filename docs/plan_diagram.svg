@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+  <style>
+    .box { fill:#fff; stroke:#0B4; stroke-width:2px; rx:6; }
+    .title { font: bold 14px sans-serif; fill:#073; }
+    .label { font: 12px sans-serif; fill:#022; }
+    .arrow { stroke:#0B4; stroke-width:2; fill:none; marker-end:url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0B4" />
+    </marker>
+  </defs>
+
+  <!-- Row 1 -->
+  <rect x="40" y="20" width="170" height="50" class="box" />
+  <text x="125" y="42" text-anchor="middle" class="title">0. Bootstrap</text>
+  <text x="125" y="58" text-anchor="middle" class="label">branch, deps, compute</text>
+
+  <rect x="250" y="20" width="170" height="50" class="box" />
+  <text x="335" y="42" text-anchor="middle" class="title">1. Data</text>
+  <text x="335" y="58" text-anchor="middle" class="label">generator + schema</text>
+
+  <rect x="460" y="20" width="170" height="50" class="box" />
+  <text x="545" y="42" text-anchor="middle" class="title">2. MLChannel</text>
+  <text x="545" y="58" text-anchor="middle" class="label">API + save/load</text>
+
+  <rect x="670" y="20" width="170" height="50" class="box" />
+  <text x="755" y="42" text-anchor="middle" class="title">3. Training</text>
+  <text x="755" y="58" text-anchor="middle" class="label">RNN baseline</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="120" width="170" height="50" class="box" />
+  <text x="125" y="142" text-anchor="middle" class="title">4. Bench</text>
+  <text x="125" y="158" text-anchor="middle" class="label">integration + smoke</text>
+
+  <rect x="250" y="120" width="170" height="50" class="box" />
+  <text x="335" y="142" text-anchor="middle" class="title">5. DoE</text>
+  <text x="335" y="158" text-anchor="middle" class="label">pilot → full grid</text>
+
+  <rect x="460" y="120" width="170" height="50" class="box" />
+  <text x="545" y="142" text-anchor="middle" class="title">6. Ablations</text>
+  <text x="545" y="158" text-anchor="middle" class="label">conditioning & size</text>
+
+  <rect x="670" y="120" width="170" height="50" class="box" />
+  <text x="755" y="142" text-anchor="middle" class="title">7. Analysis</text>
+  <text x="755" y="158" text-anchor="middle" class="label">figures & writing</text>
+
+  <!-- Row 3 -->
+  <rect x="355" y="220" width="290" height="50" class="box" />
+  <text x="500" y="242" text-anchor="middle" class="title">8. Reproducibility & CI</text>
+  <text x="500" y="258" text-anchor="middle" class="label">tests, CI, Docker</text>
+
+  <rect x="355" y="300" width="290" height="50" class="box" />
+  <text x="500" y="322" text-anchor="middle" class="title">9. Submission</text>
+  <text x="500" y="338" text-anchor="middle" class="label">paper + archive</text>
+
+  <!-- Arrows row1 -->
+  <path d="M215 45 L250 45" class="arrow" />
+  <path d="M425 45 L460 45" class="arrow" />
+  <path d="M635 45 L670 45" class="arrow" />
+
+  <!-- Arrows row2 -->
+  <path d="M215 145 L250 145" class="arrow" />
+  <path d="M425 145 L460 145" class="arrow" />
+  <path d="M635 145 L670 145" class="arrow" />
+
+  <!-- Down arrows -->
+  <path d="M425 70 L425 120" class="arrow" />
+  <path d="M585 70 L585 120" class="arrow" />
+  <path d="M500 170 L500 220" class="arrow" />
+
+</svg>

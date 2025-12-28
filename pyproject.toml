@@ -8,3 +8,11 @@ requires-python = ">=3.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7"
+
+[project.optional-dependencies]
+ml = [
+  "torch>=1.12,<2.0",
+  "numpy>=1.23",
+  "pandas>=1.5",
+  "tqdm>=4.64"
+]

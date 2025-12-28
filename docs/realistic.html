@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Realistic Paper Plan — ML-Driven Channel Modeling for DNA Storage</title>
+  <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:24px;line-height:1.5;max-width:900px}h1,h2,h3{color:#0B4;}code{background:#f6f8fa;padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<h1>Realistic Paper Plan — ML-Driven Channel Modeling for DNA Storage</h1>
+
+<h2>Title (working)</h2>
+<p><strong>ML-Driven Simulation Framework for Adaptive Error Modeling in DNA Storage Channels</strong></p>
+
+<h2>Abstract</h2>
+<p>We present an ML-driven channel modeling framework for DNA data storage that learns realistic substitution/insertion/deletion (SID) error distributions from sequencing data and synthetic reads, and integrates learned channels into an end-to-end benchmarking pipeline. Our learned models improve simulated realism, enable better encoder-decoder design choices, and lead to more accurate recovery predictions compared to parametric IDSChannel baselines.</p>
+
+<h2>Contributions</h2>
+<ul>
+<li>A trainable Channel API and <code>MLChannel</code> implementation that learns conditional error models for oligo reads.</li>
+<li>A curated dataset suite (synthetic + public sequencing) and reproducible training/evaluation harness integrated with existing <code>examples/benchmark_rs.py</code>.</li>
+<li>Experimental evaluation showing improved match to real sequencing statistics and predictive power for recovery trade-offs.</li>
+</ul>
+
+<h2>Methods</h2>
+<p>Channel model architectures: baseline n-gram/HMM, RNN (LSTM), Transformer small, and a conditional VAE for sequence-level variability. Conditioning inputs: reference sequence context, per-base features (GC, homopolymer context), and optional UMI/coverage attributes. Output modalities: per-base edit probabilities or sampleable read generators. Training objectives: maximum likelihood and calibration penalties.</p>
+
+<h2>Datasets &amp; Synthetic Data Generation</h2>
+<p>Use public DNA storage sequencing datasets as held-out tests and generate synthetic reads covering controlled ranges of substitution, deletion, insertion rates and coverage values. Provide reproducible generation scripts and metadata.</p>
+
+<h2>Experiments</h2>
+<ol>
+<li>Model quality: per-base log-likelihood and calibration.</li>
+<li>Downstream impact: bench comparisons of recovery curves (parametric vs learned).</li>
+<li>Ablations &amp; practical metrics (runtime, model size).</li>
+</ol>
+
+<h2>Implementation Plan &amp; Repo Changes</h2>
+<ul>
+<li>Add <code>dna_storage/components/channel/ml_channel.py</code> with <code>fit</code> and <code>transmit</code>.</li>
+<li>Add dataset loaders and scripts under <code>dna_storage/data/</code> and <code>/tools</code>.</li>
+<li>Add training &amp; bench examples: <code>examples/ml_train.py</code>, <code>examples/bench_ml_channel.py</code>.</li>
+</ul>
+
+<h2>Timeline</h2>
+<p>8 weeks to draft-ready with staged deliverables: data collection, modeling, benching, ablations, writing.</p>
+
+<h2>Additional Experiments / Datasets</h2>
+<p>Insertion-heavy simulations, low-coverage sweeps, homopolymer-rich sequences, and cross-platform simulations to test generalization.</p>
+
+<hr>
+<p>If you'd like, I can scaffold <code>MLChannel</code> and dataset generator and run a small baseline experiment (RNN) plugged into the bench. Shall I start?</p>
+</body>
+</html>

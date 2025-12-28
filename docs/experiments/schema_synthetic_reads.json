@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SyntheticRead",
+  "type": "object",
+  "required": ["ref_id", "ref_seq", "read_seq", "mutations", "copy_id", "trial_id", "params"],
+  "properties": {
+    "ref_id": {"type": "string"},
+    "ref_seq": {"type": "string", "pattern": "^[ACGT]+$"},
+    "read_seq": {"type": "string", "pattern": "^[ACGT]*$"},
+    "mutations": {"type": "array"},
+    "copy_id": {"type": "integer"},
+    "trial_id": {"type": "integer"},
+    "params": {"type": "object"}
+  }
+}
