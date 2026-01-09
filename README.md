@@ -1,4 +1,4 @@
-# rs-dna-pipeline ✨
+# DNA STORAGE API
 
 Compact, modular Reed–Solomon pipelines and reproducible benchmarks for DNA data storage experiments.
 Pure Python 3.9+ — quick to run, easy to extend.
