@@ -92,6 +92,6 @@ If you use this code in published work, please cite the repository URL and add a
 
 ## License
 
-MIT – see LICENSE
+[MIT – see LICENSE](LICENSE)
 
 Issues and pull requests welcome.
